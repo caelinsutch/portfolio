@@ -49,13 +49,6 @@ module.exports = {
       },
     },
     {
-      resolve: 'gatsby-source-instagram',
-      options: {
-        access_token: process.env.ACCESS_TOKEN,
-        instagram_id: process.env.BUSINESS_ID,
-      },
-    },
-    {
       resolve: 'gatsby-plugin-google-analytics',
       options: {
         trackingId: config.googleAnalyticsID,
@@ -78,6 +71,5 @@ module.exports = {
       },
     },
     'gatsby-plugin-offline',
-    'gatsby-plugin-netlify',
   ],
 }
