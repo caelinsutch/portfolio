@@ -12,9 +12,11 @@ type PageProps = {
   data: {
     projects: {
       nodes: {
-        title: string
-        slug: string
-        cover: ChildImageSharp
+        frontmatter: {
+          title: string
+          slug: string
+          cover: ChildImageSharp
+        }
       }[]
     }
   }
@@ -42,10 +44,14 @@ const Projects: React.FunctionComponent<PageProps> = ({ data: { projects } }) =>
     <Layout color="white">
       <SEO title="Projects | Caelin Sutch" />
       <Area style={pageAnimation}>
-        {projects.nodes.map((project) => (
-          <GridItem key={project.slug} to={project.slug} aria-label={`View project "${project.title}"`}>
-            <Img fluid={project.cover.childImageSharp.fluid} />
-            <span>{project.title}</span>
+        {projects.nodes.map(({ frontmatter }) => (
+          <GridItem
+            key={frontmatter.slug}
+            to={`/${frontmatter.slug}`}
+            aria-label={`View project "${frontmatter.title}"`}
+          >
+            <Img fluid={frontmatter.cover.childImageSharp.fluid} />
+            <span>{frontmatter.title}</span>
           </GridItem>
         ))}
       </Area>
@@ -57,14 +63,16 @@ export default Projects
 
 export const query = graphql`
   query Projects {
-    projects: allProjectsYaml {
+    projects: allMdx {
       nodes {
-        title
-        slug
-        cover {
-          childImageSharp {
-            fluid(quality: 95, maxWidth: 1200) {
-              ...GatsbyImageSharpFluid_withWebp
+        frontmatter {
+          title
+          slug
+          cover {
+            childImageSharp {
+              fluid(quality: 95, maxWidth: 1200) {
+                ...GatsbyImageSharpFluid_withWebp
+              }
             }
           }
         }

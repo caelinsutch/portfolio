@@ -98,7 +98,7 @@ const Project: React.FunctionComponent<PageProps> = ({
 
   const titleAnimation = useSpring({ config: config.slow, delay: 300, from: { opacity: 0 }, to: { opacity: 1 } })
   const descAnimation = useSpring({ config: config.slow, delay: 600, from: { opacity: 0 }, to: { opacity: 1 } })
-  const imagesAnimation = useSpring({ config: config.slow, delay: 800, from: { opacity: 0 }, to: { opacity: 1 } })
+  const imagesAnimation = useSpring({ config: config.default, delay: 800, from: { opacity: 0 }, to: { opacity: 1 } })
 
   return (
     <Layout color={frontmatter.color}>
@@ -114,8 +114,8 @@ const Project: React.FunctionComponent<PageProps> = ({
         <animated.h1 style={titleAnimation}>{frontmatter.title_detail}</animated.h1>
         <Description style={descAnimation}>
           <div dangerouslySetInnerHTML={{ __html: frontmatter.desc }} />
+          <MDXRenderer>{body}</MDXRenderer>
         </Description>
-        <MDXRenderer>{body}</MDXRenderer>
       </PBox>
       <Content bg={frontmatter.color} py={10}>
         <PBox style={imagesAnimation} px={[6, 6, 8, 10]}>
