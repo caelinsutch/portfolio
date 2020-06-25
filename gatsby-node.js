@@ -19,6 +19,7 @@ exports.createPages = async ({ graphql, actions }) => {
           nodes {
             slug
             images
+            mdx
           }
         }
       }

@@ -28,5 +28,6 @@
   category: "Photography"
   color: "#82726b"
   images: "breakfast"
+  mdx: "breakfast"
   cover: "./breakfast/projects-breakfast-001.jpg"
   desc: "The first meal of the day."

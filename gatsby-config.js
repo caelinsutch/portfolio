@@ -22,6 +22,9 @@ module.exports = {
     twitter: config.userTwitter,
     facebook: config.ogSiteName,
   },
+  mapping: {
+    'ProjectsYaml.mdx': 'Mdx.frontmatter.title',
+  },
   plugins: [
     'gatsby-plugin-react-helmet',
     'gatsby-plugin-styled-components',
@@ -54,6 +57,7 @@ module.exports = {
         trackingId: config.googleAnalyticsID,
       },
     },
+    `gatsby-plugin-mdx`,
     'gatsby-plugin-sharp',
     'gatsby-transformer-sharp',
     'gatsby-plugin-sitemap',
