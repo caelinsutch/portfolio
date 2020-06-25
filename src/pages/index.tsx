@@ -11,15 +11,19 @@ import { ChildImageSharp } from '../types'
 type PageProps = {
   data: {
     firstProject: {
-      title: string
-      slug: string
-      cover: ChildImageSharp
-    }
-    threeProjects: {
-      nodes: {
+      frontmatter: {
         title: string
         slug: string
         cover: ChildImageSharp
+      }
+    }
+    threeProjects: {
+      nodes: {
+        frontmatter: {
+          title: string
+          slug: string
+          cover: ChildImageSharp
+        }
       }[]
     }
     aboutUs: ChildImageSharp
@@ -107,9 +111,12 @@ const Index: React.FunctionComponent<PageProps> = ({ data: { firstProject, three
     <Layout>
       <SEO />
       <Area style={pageAnimation}>
-        <FirstProject to={firstProject.slug} aria-label={`View project "${firstProject.title}"`}>
-          <Img fluid={firstProject.cover.childImageSharp.fluid} />
-          <span>{firstProject.title}</span>
+        <FirstProject
+          to={firstProject.frontmatter.slug}
+          aria-label={`View project "${firstProject.frontmatter.title}"`}
+        >
+          <Img fluid={firstProject.frontmatter.cover.childImageSharp.fluid} />
+          <span>{firstProject.frontmatter.title}</span>
         </FirstProject>
         <AboutUs to="/about" aria-label="Visit my about page">
           <Img fluid={aboutUs.childImageSharp.fluid} />
@@ -117,9 +124,13 @@ const Index: React.FunctionComponent<PageProps> = ({ data: { firstProject, three
         </AboutUs>
         <ThreeProjects>
           {threeProjects.nodes.map((project) => (
-            <GridItem to={project.slug} key={project.slug} aria-label={`View project "${project.title}"`}>
-              <Img fluid={project.cover.childImageSharp.fluid} />
-              <span>{project.title}</span>
+            <GridItem
+              to={project.frontmatter.slug}
+              key={project.frontmatter.slug}
+              aria-label={`View project "${project.frontmatter.title}"`}
+            >
+              <Img fluid={project.frontmatter.cover.childImageSharp.fluid} />
+              <span>{project.frontmatter.title}</span>
             </GridItem>
           ))}
         </ThreeProjects>
@@ -136,25 +147,29 @@ export default Index
 
 export const query = graphql`
   query Index {
-    firstProject: projectsYaml {
-      title
-      slug
-      cover {
-        childImageSharp {
-          fluid(quality: 95, maxWidth: 1200) {
-            ...GatsbyImageSharpFluid_withWebp
-          }
-        }
-      }
-    }
-    threeProjects: allProjectsYaml(limit: 3, skip: 1) {
-      nodes {
+    firstProject: mdx {
+      frontmatter {
         title
         slug
         cover {
           childImageSharp {
             fluid(quality: 95, maxWidth: 1200) {
               ...GatsbyImageSharpFluid_withWebp
+            }
+          }
+        }
+      }
+    }
+    threeProjects: allMdx(limit: 3, skip: 1) {
+      nodes {
+        frontmatter {
+          title
+          slug
+          cover {
+            childImageSharp {
+              fluid(quality: 95, maxWidth: 1200) {
+                ...GatsbyImageSharpFluid_withWebp
+              }
             }
           }
         }

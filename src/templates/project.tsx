@@ -4,6 +4,7 @@ import Img from 'gatsby-image'
 import { transparentize, readableColor } from 'polished'
 import styled from 'styled-components'
 import { config, useSpring, animated } from 'react-spring'
+import { MDXRenderer } from 'gatsby-plugin-mdx'
 import Layout from '../components/layout'
 import { Box, AnimatedBox, Button } from '../elements'
 import SEO from '../components/SEO'
@@ -47,19 +48,18 @@ const PButton = styled(Button)<{ color: string }>`
 type PageProps = {
   data: {
     project: {
-      title_detail: string
-      color: string
-      category: string
-      desc: string
-      slug: string
-      parent: {
-        modifiedTime: string
-        birthTime: string
-      }
-      cover: {
-        childImageSharp: {
-          resize: {
-            src: string
+      body: any
+      frontmatter: {
+        title_detail: string
+        color: string
+        category: string
+        desc: string
+        slug: string
+        cover: {
+          childImageSharp: {
+            resize: {
+              src: string
+            }
           }
         }
       }
@@ -84,7 +84,12 @@ type PageProps = {
   }
 }
 
-const Project: React.FunctionComponent<PageProps> = ({ data: { project, images } }) => {
+const Project: React.FunctionComponent<PageProps> = ({
+  data: {
+    project: { frontmatter, body },
+    images,
+  },
+}) => {
   const categoryAnimation = useSpring({
     config: config.slow,
     from: { opacity: 0, transform: 'translate3d(0, -30px, 0)' },
@@ -96,23 +101,23 @@ const Project: React.FunctionComponent<PageProps> = ({ data: { project, images }
   const imagesAnimation = useSpring({ config: config.slow, delay: 800, from: { opacity: 0 }, to: { opacity: 1 } })
 
   return (
-    <Layout color={project.color}>
+    <Layout color={frontmatter.color}>
       <SEO
-        pathname={project.slug}
-        title={`${project.title_detail} | Caelin Sutch`}
-        desc={project.desc}
-        node={project.parent}
-        banner={project.cover.childImageSharp.resize.src}
+        pathname={frontmatter.slug}
+        title={`${frontmatter.title_detail} | Caelin Sutch`}
+        desc={frontmatter.desc}
+        banner={frontmatter.cover.childImageSharp.resize.src}
         individual
       />
       <PBox py={10} px={[6, 6, 8, 10]}>
-        <Category style={categoryAnimation}>{project.category}</Category>
-        <animated.h1 style={titleAnimation}>{project.title_detail}</animated.h1>
+        <Category style={categoryAnimation}>{frontmatter.category}</Category>
+        <animated.h1 style={titleAnimation}>{frontmatter.title_detail}</animated.h1>
         <Description style={descAnimation}>
-          <div dangerouslySetInnerHTML={{ __html: project.desc }} />
+          <div dangerouslySetInnerHTML={{ __html: frontmatter.desc }} />
         </Description>
+        <MDXRenderer>{body}</MDXRenderer>
       </PBox>
-      <Content bg={project.color} py={10}>
+      <Content bg={frontmatter.color} py={10}>
         <PBox style={imagesAnimation} px={[6, 6, 8, 10]}>
           {images.nodes.map((image) => (
             <Img alt={image.name} key={image.childImageSharp.fluid.src} fluid={image.childImageSharp.fluid} />
@@ -121,7 +126,7 @@ const Project: React.FunctionComponent<PageProps> = ({ data: { project, images }
       </Content>
       <PBox style={{ textAlign: 'center' }} py={10} px={[6, 6, 8, 10]}>
         <h2>Want to start your own project?</h2>
-        <PButton color={project.color} py={4} px={8}>
+        <PButton color={frontmatter.color} py={4} px={8}>
           Contact Us
         </PButton>
       </PBox>
@@ -133,22 +138,19 @@ export default Project
 
 export const query = graphql`
   query ProjectTemplate($slug: String!, $images: String!) {
-    project: projectsYaml(slug: { eq: $slug }) {
-      title_detail
-      color
-      category
-      desc
-      slug
-      parent {
-        ... on File {
-          modifiedTime
-          birthTime
-        }
-      }
-      cover {
-        childImageSharp {
-          resize(width: 1200, height: 675, quality: 80) {
-            src
+    project: mdx(frontmatter: { slug: { eq: $slug } }) {
+      body
+      frontmatter {
+        title_detail
+        color
+        category
+        desc
+        slug
+        cover {
+          childImageSharp {
+            resize(width: 1200, height: 675, quality: 80) {
+              src
+            }
           }
         }
       }
