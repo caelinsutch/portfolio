@@ -7,6 +7,7 @@ import { Box, Flex } from '../elements'
 import theme from '../../config/theme'
 import reset from '../styles/reset'
 import Logo from './logo'
+import '../styles/simple-grid.css'
 
 const GlobalStyles = createGlobalStyle`
   *::before,

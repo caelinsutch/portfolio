@@ -8,10 +8,13 @@ type Props = {
 }
 
 const Content = styled.div`
-  color: white;
+  color: white !important;
   text-align: center;
   font-weight: 800;
   padding-top: 10rem;
+  > h1 {
+    color: white;
+  }
 `
 
 const Banner: React.FC<Props> = ({ children, image }) => {
