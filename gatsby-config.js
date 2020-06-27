@@ -57,6 +57,7 @@ module.exports = {
         trackingId: config.googleAnalyticsID,
       },
     },
+    `gatsby-remark-images`,
     {
       resolve: 'gatsby-plugin-mdx',
       options: {

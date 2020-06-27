@@ -72,8 +72,8 @@ const GlobalStyles = createGlobalStyle`
     border: 0;
     margin: 0;
     padding: 0;
-    color: black;
-    font-family: 'Work Sans', '-apple-system', 'Roboto', 'Helvetica', 'Arial', sans-serif;
+    color: #484848;
+    font-family:  'Varela Round', sans-serif;
     background: white;
     font-size: 18px;
   }
@@ -90,11 +90,8 @@ const GlobalStyles = createGlobalStyle`
   ${reset}
 `
 
-const isPartiallyActive = ({ isPartiallyCurrent }: { isPartiallyCurrent: boolean }) =>
-  isPartiallyCurrent ? { className: 'navlink-active navlink' } : { className: 'navlink' }
-
-const PartialNavLink = ({ children, to, ...rest }: { children: React.ReactNode; to: string }) => (
-  <Link getProps={isPartiallyActive} to={to} {...rest}>
+const NavLink = ({ children, to, ...rest }: { children: React.ReactNode; to: string }) => (
+  <Link activeClassName="navlink-active" className="navlink" to={to} {...rest}>
     {children}
   </Link>
 )
@@ -219,6 +216,7 @@ const Layout = ({ children, color }: LayoutProps) => {
   return (
     <ThemeProvider theme={theme}>
       <>
+        <link href="https://fonts.googleapis.com/css2?family=Varela+Round&display=swap" rel="stylesheet" />
         <GlobalStyles />
         <Wrapper>
           <SideBarInner bg={color} as="aside" p={[6, 6, 8]}>
@@ -242,19 +240,16 @@ const Layout = ({ children, color }: LayoutProps) => {
                 alignItems="flex-start"
               >
                 {data.navigation.nodes.map((item) => (
-                  <PartialNavLink to={item.link} key={item.name}>
+                  <NavLink to={item.link} key={item.name}>
                     {item.name}
-                  </PartialNavLink>
+                  </NavLink>
                 ))}
               </Nav>
             </Flex>
           </SideBarInner>
           <Main>{children}</Main>
           <Footer color={color}>
-            <Box p={[6, 6, 8]} fontSize={0}>
-              Starter by <a href="https://www.lekoarts.de/en">LekoArts</a>.<br />
-              <a href="https://github.com/LekoArts/gatsby-starter-portfolio-jodie">Source</a>.
-            </Box>
+            <Box p={[6, 6, 8]} fontSize={0} />
           </Footer>
         </Wrapper>
       </>

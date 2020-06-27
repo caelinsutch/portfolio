@@ -3,6 +3,7 @@ import { Link } from 'gatsby'
 
 const GridItem = styled(Link)`
   position: relative;
+
   > div {
     position: absolute !important;
     top: 0;
@@ -13,7 +14,7 @@ const GridItem = styled(Link)`
   > div img {
     transition: all 0.3s ease 0s !important;
   }
-  > span {
+  > .title {
     z-index: 10;
     color: white;
     position: absolute;
@@ -30,6 +31,20 @@ const GridItem = styled(Link)`
       padding: ${(props) => props.theme.space[5]};
     }
   }
+
+  > .categories {
+    z-index: 10;
+    color: white;
+    position: absolute;
+    left: 0;
+    bottom: 0;
+    text-align: left;
+    font-weight: 700;
+    font-size: ${(props) => props.theme.fontSizes[1]};
+    padding: ${(props) => props.theme.space[6]};
+    text-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+  }
+
   &:hover {
     > div img {
       transform: scale(1.1);

@@ -1,32 +1,20 @@
 import React from 'react'
-import { graphql } from 'gatsby'
-import Img from 'gatsby-image'
-import { transparentize, readableColor } from 'polished'
+import { graphql, Link } from 'gatsby'
+import { readableColor } from 'polished'
 import styled from 'styled-components'
 import { config, useSpring, animated } from 'react-spring'
 import { MDXRenderer } from 'gatsby-plugin-mdx'
 import Layout from '../components/layout'
-import { Box, AnimatedBox, Button } from '../elements'
+import { AnimatedBox, Button } from '../elements'
 import SEO from '../components/SEO'
+import { Container } from '../styles/shared'
 
 const PBox = styled(AnimatedBox)`
   max-width: 1400px;
   margin: 0 auto;
 `
 
-const Content = styled(Box)<{ bg: string }>`
-  background-color: ${(props) => transparentize(0.9, props.bg)};
-
-  .gatsby-image-wrapper:not(:last-child) {
-    margin-bottom: ${(props) => props.theme.space[10]};
-
-    @media (max-width: ${(props) => props.theme.breakpoints[3]}) {
-      margin-bottom: ${(props) => props.theme.space[8]};
-    }
-  }
-`
-
-const Category = styled(AnimatedBox)`
+const CategoryWrapper = styled(AnimatedBox)`
   letter-spacing: 0.05em;
   font-size: ${(props) => props.theme.fontSizes[1]};
   text-transform: uppercase;
@@ -53,6 +41,7 @@ type PageProps = {
         title_detail: string
         color: string
         category: string
+        categories: string[]
         desc: string
         slug: string
         cover: {
@@ -64,30 +53,12 @@ type PageProps = {
         }
       }
     }
-    images: {
-      nodes: {
-        name: string
-        childImageSharp: {
-          fluid: {
-            aspectRatio: number
-            src: string
-            srcSet: string
-            sizes: string
-            base64: string
-            tracedSVG: string
-            srcWebp: string
-            srcSetWebp: string
-          }
-        }
-      }[]
-    }
   }
 }
 
 const Project: React.FunctionComponent<PageProps> = ({
   data: {
     project: { frontmatter, body },
-    images,
   },
 }) => {
   const categoryAnimation = useSpring({
@@ -98,7 +69,6 @@ const Project: React.FunctionComponent<PageProps> = ({
 
   const titleAnimation = useSpring({ config: config.slow, delay: 300, from: { opacity: 0 }, to: { opacity: 1 } })
   const descAnimation = useSpring({ config: config.slow, delay: 600, from: { opacity: 0 }, to: { opacity: 1 } })
-  const imagesAnimation = useSpring({ config: config.default, delay: 800, from: { opacity: 0 }, to: { opacity: 1 } })
 
   return (
     <Layout color={frontmatter.color}>
@@ -109,25 +79,22 @@ const Project: React.FunctionComponent<PageProps> = ({
         banner={frontmatter.cover.childImageSharp.resize.src}
         individual
       />
-      <PBox py={10} px={[6, 6, 8, 10]}>
-        <Category style={categoryAnimation}>{frontmatter.category}</Category>
-        <animated.h1 style={titleAnimation}>{frontmatter.title_detail}</animated.h1>
-        <Description style={descAnimation}>
-          <div dangerouslySetInnerHTML={{ __html: frontmatter.desc }} />
-          <MDXRenderer>{body}</MDXRenderer>
-        </Description>
+      <PBox py={10}>
+        <Container>
+          <CategoryWrapper style={categoryAnimation}>{frontmatter.categories.join(', ')}</CategoryWrapper>
+          <animated.h1 style={titleAnimation}>{frontmatter.title_detail}</animated.h1>
+          <Description style={descAnimation}>
+            <div dangerouslySetInnerHTML={{ __html: frontmatter.desc }} />
+            <MDXRenderer>{body}</MDXRenderer>
+          </Description>
+        </Container>
       </PBox>
-      <Content bg={frontmatter.color} py={10}>
-        <PBox style={imagesAnimation} px={[6, 6, 8, 10]}>
-          {images.nodes.map((image) => (
-            <Img alt={image.name} key={image.childImageSharp.fluid.src} fluid={image.childImageSharp.fluid} />
-          ))}
-        </PBox>
-      </Content>
       <PBox style={{ textAlign: 'center' }} py={10} px={[6, 6, 8, 10]}>
-        <h2>Want to start your own project?</h2>
+        <h2>Interested in my work?</h2>
         <PButton color={frontmatter.color} py={4} px={8}>
-          Contact Us
+          <Link to="/about" style={{ textDecoration: 'none', color: 'white' }}>
+            Schedule a Meeting with Me
+          </Link>
         </PButton>
       </PBox>
     </Layout>
@@ -137,13 +104,14 @@ const Project: React.FunctionComponent<PageProps> = ({
 export default Project
 
 export const query = graphql`
-  query ProjectTemplate($slug: String!, $images: String!) {
+  query ProjectTemplate($slug: String!) {
     project: mdx(frontmatter: { slug: { eq: $slug } }) {
       body
       frontmatter {
         title_detail
         color
         category
+        categories
         desc
         slug
         cover {
@@ -151,16 +119,6 @@ export const query = graphql`
             resize(width: 1200, height: 675, quality: 80) {
               src
             }
-          }
-        }
-      }
-    }
-    images: allFile(filter: { relativePath: { regex: $images } }, sort: { fields: name, order: ASC }) {
-      nodes {
-        name
-        childImageSharp {
-          fluid(quality: 95, maxWidth: 1200) {
-            ...GatsbyImageSharpFluid_withWebp
           }
         }
       }
