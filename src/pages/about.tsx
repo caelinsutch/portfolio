@@ -1,4 +1,5 @@
 import React from 'react'
+import { InlineWidget } from 'react-calendly'
 import { config, useSpring } from 'react-spring'
 import Layout from '../components/layout'
 import { AnimatedBox } from '../elements'
@@ -10,7 +11,6 @@ const About = () => {
     from: { opacity: 0 },
     to: { opacity: 1 },
   })
-
   return (
     <Layout>
       <SEO title="About | Caelin Sutch" desc="Hi. I'm Caelin Sutch! A software developer and creative. " />
@@ -23,6 +23,20 @@ const About = () => {
           graphic work for various clients.
         </p>
         <p>Currently, I'm the COO of Bytes Robotics, an innovative autonomous robotics startup.</p>
+        <h2>Talk with Me</h2>
+        <p>Want to chat about something? Schedule a call with me.</p>
+        <InlineWidget
+          pageSettings={{
+            backgroundColor: 'ffffff',
+            primaryColor: '00a2ff',
+            textColor: '4d5055',
+          }}
+          styles={{
+            maxWidth: '600px',
+            height: '700px',
+          }}
+          url="https://calendly.com/caelinsutch"
+        />
       </AnimatedBox>
     </Layout>
   )
