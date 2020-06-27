@@ -5,7 +5,7 @@ import Layout from '../components/layout'
 import { AnimatedBox } from '../elements'
 import SEO from '../components/SEO'
 
-const About = () => {
+const WorkWithMe = () => {
   const pageAnimation = useSpring({
     config: config.slow,
     from: { opacity: 0 },
@@ -13,7 +13,7 @@ const About = () => {
   })
   return (
     <Layout>
-      <SEO title="About | Caelin Sutch" desc="Hi. I'm Caelin Sutch! A software developer and creative. " />
+      <SEO title="Work With Me | Caelin Sutch" desc="Hi. I'm Caelin Sutch! A software developer and creative. " />
       <AnimatedBox style={pageAnimation} py={[6, 6, 6, 8]} px={[6, 6, 8, 6, 8, 13]}>
         <h1>Hi. I'm Caelin Sutch!</h1>
         <p>
@@ -42,4 +42,4 @@ const About = () => {
   )
 }
 
-export default About
+export default WorkWithMe

@@ -1,6 +1,4 @@
 - name: "Home"
   link: "/"
-- name: "Services"
-  link: "/services"
-- name: "About"
-  link: "/about"
+- name: "Work With Me"
+  link: "/work-with-me"
