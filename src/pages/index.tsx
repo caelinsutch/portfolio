@@ -28,6 +28,16 @@ const Intro = styled.div`
   grid-column: span 3;
   grid-row: span 2;
   margin: 15rem 0;
+  padding: 3rem;
+  @media (max-width: ${(props) => props.theme.breakpoints[2]}) {
+    margin: 0 !important;
+    h1 {
+      font-size: 2rem;
+    }
+    h2 {
+      font-size: 1.5rem;
+    }
+  }
 `
 
 const IntroContent = styled(Container)`

@@ -22,9 +22,6 @@ module.exports = {
     twitter: config.userTwitter,
     facebook: config.ogSiteName,
   },
-  mapping: {
-    'ProjectsYaml.mdx': 'Mdx.frontmatter.title',
-  },
   plugins: [
     'gatsby-plugin-react-helmet',
     'gatsby-plugin-styled-components',
